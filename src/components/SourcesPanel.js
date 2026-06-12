@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { addSource } from '@/lib/firestore';
 import { chunkText } from '@/lib/chunker';
+import { parseDocument, ACCEPTED_FILE_TYPES } from '@/lib/parseDocument';
 import { MATHS_SAMPLES } from '@/lib/samples';
 import {
   Plus,
@@ -52,21 +53,8 @@ export default function SourcesPanel({
     if (!file) return;
     setUploading(true);
     try {
-      let text = '';
-
-      if (file.type === 'application/pdf') {
-        const formData = new FormData();
-        formData.append('file', file);
-        const res = await fetch('/api/parse-pdf', {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        text = data.text;
-      } else {
-        text = await file.text();
-      }
+      // Parse document entirely client-side — file never leaves the browser
+      const text = await parseDocument(file);
 
       const name = sourceName.trim() || file.name;
       const sourceId = `src_${Date.now()}`;
@@ -76,7 +64,6 @@ export default function SourcesPanel({
         sourceName: name,
       });
 
-      // Save source with chunks to Firestore (no Storage upload)
       await addSource(moduleId, {
         type: selectedType,
         name,
@@ -147,7 +134,7 @@ export default function SourcesPanel({
 
         setSampleProgress(`Loading ${sample.name}... (${loaded + 1}/${MATHS_SAMPLES.length})`);
 
-        // Fetch PDF from public/samples/
+        // Fetch PDF from public/samples/ and parse client-side
         const res = await fetch(`/samples/${encodeURIComponent(sample.fileName)}`);
         if (!res.ok) {
           console.warn(`Failed to fetch ${sample.fileName}`);
@@ -156,21 +143,18 @@ export default function SourcesPanel({
         }
 
         const blob = await res.blob();
-        const formData = new FormData();
-        formData.append('file', blob, sample.fileName);
-        const parseRes = await fetch('/api/parse-pdf', {
-          method: 'POST',
-          body: formData,
-        });
-        const parseData = await parseRes.json();
-        if (!parseRes.ok) {
-          console.warn(`Failed to parse ${sample.fileName}:`, parseData.error);
+        const file = new File([blob], sample.fileName, { type: 'application/pdf' });
+        let parsedText;
+        try {
+          parsedText = await parseDocument(file);
+        } catch (parseErr) {
+          console.warn(`Failed to parse ${sample.fileName}:`, parseErr);
           loaded++;
           continue;
         }
 
         const sourceId = `src_${Date.now()}_${loaded}`;
-        const chunks = chunkText(parseData.text, {
+        const chunks = chunkText(parsedText, {
           sourceId,
           sourceType: sample.type,
           sourceName: sample.name,
@@ -279,12 +263,12 @@ export default function SourcesPanel({
           >
             <Upload size={20} className="mx-auto text-gray-400 mb-1" />
             <p className="text-xs text-gray-500">
-              Drop PDF or click to upload
+              PDF, DOCX, XLSX, PPTX, TXT
             </p>
             <input
               ref={fileInputRef}
               type="file"
-              accept=".pdf,.txt"
+              accept={ACCEPTED_FILE_TYPES}
               className="hidden"
               onChange={(e) => {
                 if (e.target.files?.[0]) handleFileUpload(e.target.files[0]);

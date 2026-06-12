@@ -1,0 +1,4 @@
+node_modules/
+.agents/
+skills-lock.json
+.DS_Store

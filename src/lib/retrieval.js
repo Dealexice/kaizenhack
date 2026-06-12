@@ -54,15 +54,18 @@ export function retrieveTopK(query, chunks, k = 8) {
   const k1 = 1.5;
   const b = 0.75;
 
+  // Helper to get all text fields in a chunk to support metadata-based searches
+  const getSearchableText = (c) => `${c.sourceName || ''} ${c.sourceType || ''} ${c.text || ''}`;
+
   // Compute average doc length
-  const docLengths = chunks.map((c) => tokenize(c.text).length);
+  const docLengths = chunks.map((c) => tokenize(getSearchableText(c)).length);
   const avgDl = docLengths.reduce((a, b) => a + b, 0) / chunks.length;
 
   // Compute IDF for query terms
   const N = chunks.length;
   const df = {};
   for (const chunk of chunks) {
-    const terms = new Set(tokenize(chunk.text));
+    const terms = new Set(tokenize(getSearchableText(chunk)));
     for (const t of queryTokens) {
       if (terms.has(t)) df[t] = (df[t] || 0) + 1;
     }
@@ -76,7 +79,7 @@ export function retrieveTopK(query, chunks, k = 8) {
 
   // Score each chunk
   const scored = chunks.map((chunk, i) => {
-    const tokens = tokenize(chunk.text);
+    const tokens = tokenize(getSearchableText(chunk));
     const tf = termFrequency(tokens);
     const dl = docLengths[i];
 

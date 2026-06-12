@@ -67,8 +67,8 @@ export async function parseDocument(file) {
 async function parsePDF(file) {
   const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
 
-  // Use fake worker to avoid worker file issues
-  pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+  // Use unpkg CDN for the worker matching our local pdfjs-dist version
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version || '6.0.227'}/legacy/build/pdf.worker.min.mjs`;
 
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer, useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true }).promise;

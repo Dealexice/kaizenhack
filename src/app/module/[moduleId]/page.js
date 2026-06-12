@@ -77,7 +77,7 @@ function ModuleWorkspace() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7]">
-        <div className="w-8 h-8 border-3 border-[#A71930] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-[#E12726] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -97,7 +97,7 @@ function ModuleWorkspace() {
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-3 text-sm font-medium capitalize transition-colors cursor-pointer ${
               activeTab === tab
-                ? 'text-[#A71930] border-b-2 border-[#A71930]'
+                ? 'text-[#E12726] border-b-2 border-[#E12726]'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >

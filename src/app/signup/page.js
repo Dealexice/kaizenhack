@@ -58,7 +58,7 @@ export default function SignupPage() {
         <div className="flex flex-col items-center mb-8">
           <KCLLogo size={64} />
           <h1 className="mt-4 text-2xl font-bold text-[#1A1A1A]">
-            Join <span className="text-[#A71930]">Zen Learn</span>
+            Join <span className="text-[#E12726]">Zen Learn</span>
           </h1>
           <p className="mt-1 text-sm text-gray-500">
             Create your account to get started
@@ -90,7 +90,7 @@ export default function SignupPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none transition-all text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none transition-all text-sm"
                 placeholder="Jane Smith"
               />
             </div>
@@ -107,7 +107,7 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none transition-all text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none transition-all text-sm"
                 placeholder="your.name@kcl.ac.uk"
               />
             </div>
@@ -124,7 +124,7 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none transition-all text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none transition-all text-sm"
                 placeholder="At least 6 characters"
               />
             </div>
@@ -141,14 +141,14 @@ export default function SignupPage() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none transition-all text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none transition-all text-sm"
                 placeholder="••••••••"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-[#A71930] hover:bg-[#8B1428] text-white font-medium rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+              className="w-full py-2.5 bg-[#E12726] hover:bg-[#C41F1E] text-white font-medium rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
             >
               {loading ? 'Creating account...' : 'Create account'}
             </button>

@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7]">
-      <div className="w-8 h-8 border-3 border-[#A71930] border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-3 border-[#E12726] border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }

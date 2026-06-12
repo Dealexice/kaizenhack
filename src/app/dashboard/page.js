@@ -88,7 +88,7 @@ function DashboardContent() {
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
       {/* Top Bar */}
-      <header className="bg-[#A71930] text-white shadow-md">
+      <header className="bg-[#E12726] text-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <KCLLogo size={32} className="rounded" />
@@ -128,7 +128,7 @@ function DashboardContent() {
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#A71930] hover:bg-[#8B1428] text-white rounded-lg font-medium transition-colors text-sm cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#E12726] hover:bg-[#C41F1E] text-white rounded-lg font-medium transition-colors text-sm cursor-pointer"
           >
             <Plus size={18} />
             New module
@@ -137,7 +137,7 @@ function DashboardContent() {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-3 border-[#A71930] border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-3 border-[#E12726] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : modules.length === 0 ? (
           <div className="bg-white rounded-xl border border-[#E5E5E7] p-12 text-center">
@@ -151,7 +151,7 @@ function DashboardContent() {
             </p>
             <button
               onClick={() => setShowModal(true)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#A71930] hover:bg-[#8B1428] text-white rounded-lg font-medium transition-colors text-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#E12726] hover:bg-[#C41F1E] text-white rounded-lg font-medium transition-colors text-sm cursor-pointer"
             >
               <Plus size={18} />
               Create your first module
@@ -162,14 +162,14 @@ function DashboardContent() {
             {modules.map((mod) => (
               <div
                 key={mod.id}
-                className="bg-white rounded-xl border border-[#E5E5E7] hover:shadow-lg hover:border-[#A71930]/30 transition-all group cursor-pointer"
+                className="bg-white rounded-xl border border-[#E5E5E7] hover:shadow-lg hover:border-[#E12726]/30 transition-all group cursor-pointer"
                 onClick={() => router.push(`/module/${mod.id}`)}
               >
                 <div className="p-5">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       {mod.code && (
-                        <span className="inline-block px-2 py-0.5 bg-[#A71930]/10 text-[#A71930] text-xs font-medium rounded mb-2">
+                        <span className="inline-block px-2 py-0.5 bg-[#E12726]/10 text-[#E12726] text-xs font-medium rounded mb-2">
                           {mod.code}
                         </span>
                       )}
@@ -219,7 +219,7 @@ function DashboardContent() {
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   required
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none text-sm"
                   placeholder="e.g. Introduction to Electrical Engineering"
                   autoFocus
                 />
@@ -233,7 +233,7 @@ function DashboardContent() {
                   type="text"
                   value={newCode}
                   onChange={(e) => setNewCode(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none text-sm"
                   placeholder="e.g. 4CCYB020"
                 />
               </div>
@@ -248,7 +248,7 @@ function DashboardContent() {
                 <button
                   type="submit"
                   disabled={creating}
-                  className="flex-1 py-2.5 bg-[#A71930] hover:bg-[#8B1428] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                  className="flex-1 py-2.5 bg-[#E12726] hover:bg-[#C41F1E] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   {creating ? 'Creating...' : 'Create'}
                 </button>

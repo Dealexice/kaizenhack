@@ -119,7 +119,7 @@ export default function GrowthPanel({
 
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
         {/* K-Points Overview */}
-        <div className="bg-gradient-to-br from-[#A71930] to-[#8B1428] rounded-xl p-4 text-white">
+        <div className="bg-gradient-to-br from-[#E12726] to-[#C41F1E] rounded-xl p-4 text-white">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Star size={18} className="fill-yellow-300 text-yellow-300" />
@@ -154,7 +154,7 @@ export default function GrowthPanel({
             <button
               onClick={generateDiagnosis}
               disabled={diagLoading}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-[#A71930] hover:bg-[#8B1428] text-white rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-[#E12726] hover:bg-[#C41F1E] text-white rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
             >
               {diagLoading ? (
                 <Loader2 size={12} className="animate-spin" />
@@ -344,14 +344,14 @@ export default function GrowthPanel({
 
         {/* Tutor Booking CTA */}
         {hasRecurring && (
-          <div className="bg-[#A71930]/5 border border-[#A71930]/20 rounded-xl p-4">
+          <div className="bg-[#E12726]/5 border border-[#E12726]/20 rounded-xl p-4">
             <div className="flex items-start gap-2">
               <AlertTriangle
                 size={16}
-                className="text-[#A71930] mt-0.5 flex-shrink-0"
+                className="text-[#E12726] mt-0.5 flex-shrink-0"
               />
               <div>
-                <p className="text-xs font-semibold text-[#A71930]">
+                <p className="text-xs font-semibold text-[#E12726]">
                   Recurring issue detected
                 </p>
                 <p className="text-[11px] text-gray-600 mt-1">
@@ -368,7 +368,7 @@ export default function GrowthPanel({
                       setKPoints((prev) => prev + K_POINT_VALUES.BOOK_TUTOR);
                     } catch {}
                   }}
-                  className="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-[#A71930] text-white text-xs font-medium rounded-lg hover:bg-[#8B1428] transition-colors"
+                  className="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-[#E12726] text-white text-xs font-medium rounded-lg hover:bg-[#C41F1E] transition-colors"
                 >
                   Book with tutor
                   <ExternalLink size={12} />

@@ -11,7 +11,7 @@ export default function TopBar({ moduleData, kPoints }) {
   const router = useRouter();
 
   return (
-    <header className="bg-[#A71930] text-white shadow-md flex-shrink-0">
+    <header className="bg-[#E12726] text-white shadow-md flex-shrink-0">
       <div className="px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <button

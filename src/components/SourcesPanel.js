@@ -21,7 +21,7 @@ import {
 
 const SOURCE_TYPES = [
   { value: 'learning_outcome', label: 'Learning Outcomes', icon: BookOpen, color: '#0072CE' },
-  { value: 'mark_scheme', label: 'Mark Scheme', icon: ClipboardList, color: '#A71930' },
+  { value: 'mark_scheme', label: 'Mark Scheme', icon: ClipboardList, color: '#E12726' },
   { value: 'feedback', label: 'Feedback', icon: MessageSquare, color: '#D97706' },
   { value: 'resource', label: 'Module Resource', icon: Library, color: '#1E8E3E' },
 ];
@@ -211,7 +211,7 @@ export default function SourcesPanel({
         </div>
         <button
           onClick={() => setShowUpload(!showUpload)}
-          className="w-full mt-2 flex items-center justify-center gap-2 px-3 py-2 border border-dashed border-gray-300 rounded-lg text-sm text-gray-600 hover:border-[#A71930] hover:text-[#A71930] transition-colors cursor-pointer"
+          className="w-full mt-2 flex items-center justify-center gap-2 px-3 py-2 border border-dashed border-gray-300 rounded-lg text-sm text-gray-600 hover:border-[#E12726] hover:text-[#E12726] transition-colors cursor-pointer"
         >
           <Plus size={16} />
           Add source
@@ -257,13 +257,13 @@ export default function SourcesPanel({
             value={sourceName}
             onChange={(e) => setSourceName(e.target.value)}
             placeholder="Source name (optional)"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none"
           />
 
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none bg-white cursor-pointer"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none bg-white cursor-pointer"
           >
             {SOURCE_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
@@ -299,7 +299,7 @@ export default function SourcesPanel({
             onChange={(e) => setPasteText(e.target.value)}
             placeholder="Paste your feedback, mark scheme, or learning outcomes here..."
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none resize-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none resize-none"
           />
 
           <button

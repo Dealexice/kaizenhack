@@ -8,7 +8,7 @@ export default function KCLLogo({ className = '', size = 40 }) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <rect width="100" height="100" rx="8" fill="#A71930" />
+      <rect width="100" height="100" rx="8" fill="#E12726" />
       <text
         x="50"
         y="42"

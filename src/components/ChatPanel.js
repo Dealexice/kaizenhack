@@ -119,7 +119,7 @@ export default function ChatPanel({ moduleId, allChunks, onCitationClick }) {
                 <button
                   key={i}
                   onClick={() => sendMessage(prompt)}
-                  className="w-full text-left px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-[#A71930] hover:text-[#A71930] transition-colors cursor-pointer"
+                  className="w-full text-left px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-[#E12726] hover:text-[#E12726] transition-colors cursor-pointer"
                 >
                   {prompt}
                 </button>
@@ -138,7 +138,7 @@ export default function ChatPanel({ moduleId, allChunks, onCitationClick }) {
             <div
               className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                 msg.role === 'user'
-                  ? 'bg-[#A71930] text-white rounded-br-md'
+                  ? 'bg-[#E12726] text-white rounded-br-md'
                   : 'bg-[#F5F5F7] text-[#1A1A1A] rounded-bl-md'
               }`}
             >
@@ -173,7 +173,7 @@ export default function ChatPanel({ moduleId, allChunks, onCitationClick }) {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask a question or create content..."
               disabled={isTyping}
-              className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-full focus:ring-2 focus:ring-[#A71930] focus:border-transparent outline-none text-sm disabled:opacity-50"
+              className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-full focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none text-sm disabled:opacity-50"
             />
             <Sparkles
               size={16}
@@ -183,7 +183,7 @@ export default function ChatPanel({ moduleId, allChunks, onCitationClick }) {
           <button
             type="submit"
             disabled={isTyping || !input.trim()}
-            className="p-2.5 bg-[#A71930] hover:bg-[#8B1428] text-white rounded-full transition-colors disabled:opacity-40 cursor-pointer flex-shrink-0"
+            className="p-2.5 bg-[#E12726] hover:bg-[#C41F1E] text-white rounded-full transition-colors disabled:opacity-40 cursor-pointer flex-shrink-0"
           >
             <Send size={16} />
           </button>

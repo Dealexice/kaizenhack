@@ -72,6 +72,10 @@ export async function deleteSource(moduleId, sourceId) {
   await deleteDoc(doc(db, 'modules', moduleId, 'sources', sourceId));
 }
 
+export async function updateSource(moduleId, sourceId, sourceData) {
+  await updateDoc(doc(db, 'modules', moduleId, 'sources', sourceId), sourceData);
+}
+
 // ─── Conversations ──────────────────────────────────────────────────
 export async function createConversation(moduleId) {
   const ref = await addDoc(

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { addSource } from '@/lib/firestore';
+import { addSource, deleteSource, updateSource } from '@/lib/firestore';
 import { chunkText } from '@/lib/chunker';
 import { parseDocument, ACCEPTED_FILE_TYPES } from '@/lib/parseDocument';
 import { MATHS_SAMPLES } from '@/lib/samples';
@@ -18,6 +18,9 @@ import {
   ChevronRight,
   FolderOpen,
   Loader2,
+  MoreVertical,
+  Edit2,
+  Trash2,
 } from 'lucide-react';
 
 const SOURCE_TYPES = [
@@ -42,6 +45,74 @@ export default function SourcesPanel({
   const [loadingSamples, setLoadingSamples] = useState(false);
   const [sampleProgress, setSampleProgress] = useState('');
   const fileInputRef = useRef(null);
+
+  // States for Edit / Delete operations
+  const [menuOpenId, setMenuOpenId] = useState(null);
+  const [editingSource, setEditingSource] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editText, setEditText] = useState('');
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  // Sort all feedback sources by createdAt ascending to determine their chronological order
+  const sortedFeedback = [...sources.filter(s => s.type === 'feedback')].sort((a, b) => {
+    const aTime = a.createdAt?.seconds || a.createdAt?.toMillis?.() || 0;
+    const bTime = b.createdAt?.seconds || b.createdAt?.toMillis?.() || 0;
+    if (aTime !== bTime) {
+      return aTime - bTime;
+    }
+    return (a.id || '').localeCompare(b.id || '');
+  });
+
+  const feedbackNumberMap = {};
+  sortedFeedback.forEach((src, index) => {
+    feedbackNumberMap[src.id] = index + 1;
+  });
+
+  const handleEditClick = (src) => {
+    setEditingSource(src);
+    setEditName(src.name);
+    setEditText(src.text || '');
+    setMenuOpenId(null);
+  };
+
+  const handleDeleteClick = async (src) => {
+    if (window.confirm(`Are you sure you want to delete "${src.name}"?`)) {
+      try {
+        await deleteSource(moduleId, src.id);
+        onSourcesChange();
+      } catch (err) {
+        console.error('Failed to delete source:', err);
+        alert('Failed to delete source: ' + err.message);
+      }
+    }
+    setMenuOpenId(null);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editName.trim()) return;
+    setSavingEdit(true);
+    try {
+      const chunks = chunkText(editText, {
+        sourceId: editingSource.id,
+        sourceType: editingSource.type,
+        sourceName: editName.trim(),
+      });
+
+      await updateSource(moduleId, editingSource.id, {
+        name: editName.trim(),
+        text: editText,
+        chunks,
+      });
+
+      setEditingSource(null);
+      onSourcesChange();
+    } catch (err) {
+      console.error('Failed to update source:', err);
+      alert('Failed to update source: ' + err.message);
+    } finally {
+      setSavingEdit(false);
+    }
+  };
 
   // Group sources by type
   const grouped = {};
@@ -165,7 +236,7 @@ export default function SourcesPanel({
           name: sample.name,
           fileName: sample.fileName,
           fileUrl: null,
-          text: parseData.text,
+          text: parsedText,
           chunks,
         });
 
@@ -324,21 +395,70 @@ export default function SourcesPanel({
                 <div className="space-y-1">
                   {items.map((src) => (
                     <div key={src.id}>
-                      <button
-                        onClick={() =>
-                          setExpandedSource(
-                            expandedSource === src.id ? null : src.id
-                          )
-                        }
-                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left hover:bg-[#F5F5F7] transition-colors cursor-pointer group"
-                      >
-                        {expandedSource === src.id ? (
-                          <ChevronDown size={14} className="text-gray-400 flex-shrink-0" />
-                        ) : (
-                          <ChevronRight size={14} className="text-gray-400 flex-shrink-0" />
+                      <div className="relative flex items-center group w-full">
+                        <button
+                          onClick={() =>
+                            setExpandedSource(
+                              expandedSource === src.id ? null : src.id
+                            )
+                          }
+                          className={`flex-1 flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left hover:bg-[#F5F5F7] transition-colors cursor-pointer ${
+                            type.value === 'feedback' ? 'pr-10' : ''
+                          }`}
+                        >
+                          {expandedSource === src.id ? (
+                            <ChevronDown size={14} className="text-gray-400 flex-shrink-0" />
+                          ) : (
+                            <ChevronRight size={14} className="text-gray-400 flex-shrink-0" />
+                          )}
+                          <span className="truncate flex-1">
+                            {type.value === 'feedback'
+                              ? `Feedback ${feedbackNumberMap[src.id] || ''}: ${src.name}`
+                              : src.name}
+                          </span>
+                        </button>
+
+                        {type.value === 'feedback' && (
+                          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center z-20">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                setMenuOpenId(menuOpenId === src.id ? null : src.id);
+                              }}
+                              className="p-1 hover:bg-gray-200 rounded-full text-gray-400 hover:text-gray-600 cursor-pointer"
+                            >
+                              <MoreVertical size={16} />
+                            </button>
+                            {menuOpenId === src.id && (
+                              <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-30 w-24">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    handleEditClick(src);
+                                  }}
+                                  className="w-full text-left px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 cursor-pointer"
+                                >
+                                  <Edit2 size={12} />
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    handleDeleteClick(src);
+                                  }}
+                                  className="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 flex items-center gap-1.5 cursor-pointer"
+                                >
+                                  <Trash2 size={12} />
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         )}
-                        <span className="truncate flex-1">{src.name}</span>
-                      </button>
+                      </div>
                       {expandedSource === src.id && (
                         <div className="ml-7 mr-2 mb-2 max-h-60 overflow-y-auto">
                           {src.chunks?.map((chunk) => (
@@ -369,6 +489,72 @@ export default function SourcesPanel({
           })
         )}
       </div>
+
+      {/* Backdrop for closing dropdown */}
+      {menuOpenId && (
+        <div
+          className="fixed inset-0 z-10"
+          onClick={() => setMenuOpenId(null)}
+        />
+      )}
+
+      {/* Edit modal */}
+      {editingSource && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-[#E5E5E7] flex flex-col max-h-[85vh]">
+            <div className="p-4 border-b border-[#E5E5E7] flex justify-between items-center bg-[#F5F5F7]">
+              <h3 className="font-semibold text-sm text-[#1A1A1A]">Edit Feedback</h3>
+              <button
+                onClick={() => setEditingSource(null)}
+                className="p-1.5 hover:bg-gray-200 rounded-lg text-gray-500 cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <div className="p-4 space-y-4 overflow-y-auto flex-1">
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                  Feedback Name
+                </label>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none"
+                  placeholder="e.g. Midterm Coursework Feedback"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                  Feedback Content
+                </label>
+                <textarea
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  rows={10}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none resize-none font-mono"
+                  placeholder="Paste your feedback text here..."
+                />
+              </div>
+            </div>
+            <div className="p-4 border-t border-[#E5E5E7] flex gap-3 justify-end bg-[#F5F5F7]">
+              <button
+                onClick={() => setEditingSource(null)}
+                className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-100 cursor-pointer transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                disabled={savingEdit || !editName.trim()}
+                className="px-4 py-2 bg-[#E12726] hover:bg-[#C41F1E] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                {savingEdit ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

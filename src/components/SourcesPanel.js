@@ -26,7 +26,7 @@ import {
 const SOURCE_TYPES = [
   { value: 'learning_outcome', label: 'Learning Outcomes', icon: BookOpen, color: '#0072CE' },
   { value: 'mark_scheme', label: 'Mark Scheme', icon: ClipboardList, color: '#E12726' },
-  { value: 'feedback', label: 'Feedback', icon: MessageSquare, color: '#D97706' },
+  { value: 'feedback', label: 'Resources', icon: MessageSquare, color: '#D97706' },
   { value: 'resource', label: 'Module Resource', icon: Library, color: '#1E8E3E' },
 ];
 
@@ -352,7 +352,7 @@ export default function SourcesPanel({
           <textarea
             value={pasteText}
             onChange={(e) => setPasteText(e.target.value)}
-            placeholder="Paste your feedback, mark scheme, or learning outcomes here..."
+            placeholder="Paste your resource text, mark scheme, or learning outcomes here..."
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none resize-none"
           />
@@ -413,7 +413,7 @@ export default function SourcesPanel({
                           )}
                           <span className="truncate flex-1">
                             {type.value === 'feedback'
-                              ? `Feedback ${feedbackNumberMap[src.id] || ''}: ${src.name}`
+                              ? `Resource ${feedbackNumberMap[src.id] || ''}: ${src.name}`
                               : src.name}
                           </span>
                         </button>
@@ -503,7 +503,7 @@ export default function SourcesPanel({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-[#E5E5E7] flex flex-col max-h-[85vh]">
             <div className="p-4 border-b border-[#E5E5E7] flex justify-between items-center bg-[#F5F5F7]">
-              <h3 className="font-semibold text-sm text-[#1A1A1A]">Edit Feedback</h3>
+              <h3 className="font-semibold text-sm text-[#1A1A1A]">Edit Resource</h3>
               <button
                 onClick={() => setEditingSource(null)}
                 className="p-1.5 hover:bg-gray-200 rounded-lg text-gray-500 cursor-pointer"
@@ -514,26 +514,26 @@ export default function SourcesPanel({
             <div className="p-4 space-y-4 overflow-y-auto flex-1">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                  Feedback Name
+                  Resource Name
                 </label>
                 <input
                   type="text"
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none"
-                  placeholder="e.g. Midterm Coursework Feedback"
+                  placeholder="e.g. Midterm Coursework Resource"
                 />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                  Feedback Content
+                  Resource Content
                 </label>
                 <textarea
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
                   rows={10}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#E12726] focus:border-transparent outline-none resize-none font-mono"
-                  placeholder="Paste your feedback text here..."
+                  placeholder="Paste your resource text here..."
                 />
               </div>
             </div>
